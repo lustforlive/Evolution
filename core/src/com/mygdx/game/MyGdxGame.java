@@ -27,7 +27,7 @@ public class MyGdxGame extends Game {
 		WIDTH= Gdx.graphics.getWidth();
 		HEIGHT=Gdx.graphics.getHeight();
 	//	background = new Texture("black.jpeg");
-		playbutton = new Texture("button.png");
+		playbutton = new Texture("button1.png");
 		ameba= new Texture("ameba1.png");
 		//if (Gdx.input.justTouched()){
 		menu=new Menu(this);

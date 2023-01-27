@@ -49,6 +49,10 @@ public class PlayScreen implements Screen {
     private TextureRegion myTextureRegion;
     private TextureRegionDrawable myTexRegionDrawable;
     private ImageButton button;
+    private Texture myTexture2;
+    private TextureRegion myTextureRegion2;
+    private TextureRegionDrawable myTexRegionDrawable2;
+    private ImageButton button2;
     int b=0;
 
     //конструктор
@@ -68,7 +72,7 @@ public class PlayScreen implements Screen {
         amebas=new Array<Ameba>();
         spawn();
         //кнопка с изображением
-        myTexture = new Texture(Gdx.files.internal("imagebutton.png"));
+        myTexture = new Texture(Gdx.files.internal("imbutton1.png"));
         myTextureRegion = new TextureRegion(myTexture);
         myTexRegionDrawable = new TextureRegionDrawable(myTextureRegion);
         button = new ImageButton(myTexRegionDrawable); //Set the button up
@@ -76,6 +80,7 @@ public class PlayScreen implements Screen {
         stage = new Stage(new ScreenViewport()); //Set up a stage for the ui
         stage.addActor(button); //Add the button to the stage to perform rendering and take input.
         Gdx.input.setInputProcessor(stage);
+
         //функционал кнопки
        button.addListener(new ClickListener(){
            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -88,6 +93,26 @@ public class PlayScreen implements Screen {
 
            }
        });
+      /* вторая кнопка
+       myTexture2 = new Texture(Gdx.files.internal("button2.png"));
+        myTextureRegion2 = new TextureRegion(myTexture2);
+        myTexRegionDrawable2 = new TextureRegionDrawable(myTextureRegion2);
+        button2 = new ImageButton(myTexRegionDrawable2); //Set the button up
+
+        stage = new Stage(new ScreenViewport()); //Set up a stage for the ui
+        stage.addActor(button); //Add the button to the stage to perform rendering and take input.
+        Gdx.input.setInputProcessor(stage);
+        button2.addListener(new ClickListener(){
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                b++;
+                return true;
+            }
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                spawn();
+
+            }
+        });*/
 
     }
 //метод отвечающий за рисовку
@@ -98,6 +123,7 @@ public class PlayScreen implements Screen {
         MyGdxGame.batch.begin();
         stage.act(Gdx.graphics.getDeltaTime()); //Perform ui logic
         stage.draw();
+
         Ameba ameba=new Ameba(1,1);
 //прописано движение
         int a = rand.nextInt(10) % 50 + 50; //генерация целого числа из диапозона -50 - +50 (вероятность)
