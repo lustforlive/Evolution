@@ -68,7 +68,7 @@ public class PlayScreen implements Screen {
         amebas=new Array<Ameba>();
         spawn();
         //кнопка с изображением
-        myTexture = new Texture(Gdx.files.internal("button1.png"));
+        myTexture = new Texture(Gdx.files.internal("imagebutton.png"));
         myTextureRegion = new TextureRegion(myTexture);
         myTexRegionDrawable = new TextureRegionDrawable(myTextureRegion);
         button = new ImageButton(myTexRegionDrawable); //Set the button up
