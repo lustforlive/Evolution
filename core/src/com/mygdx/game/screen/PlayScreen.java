@@ -50,8 +50,8 @@ public class PlayScreen implements Screen {
     private TextureRegionDrawable myTexRegionDrawable;
     private ImageButton button;
     int b=0;
-    //прописать кнопку для настроек
-   // Array<Ameba> arrayList;
+
+    //конструктор
     public PlayScreen(MyGdxGame game) {
      this.game=game;
         //this.game=game;
@@ -61,7 +61,7 @@ public class PlayScreen implements Screen {
         //кнопка
 
     }
-
+//главный метод в котором мы задаем глобалным переменным в файле значения и тд
     @Override
     public void show() {
         vector = new Vector2();
@@ -90,7 +90,7 @@ public class PlayScreen implements Screen {
        });
 
     }
-
+//метод отвечающий за рисовку
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(1, 1, 1, 1);
@@ -122,7 +122,7 @@ public class PlayScreen implements Screen {
  if(b==1){
      for(int i=0;i<b;i++){
          //for(Ameba ameba1:amebas) {
-             MyGdxGame.batch.draw(ameba.img, x, y);
+             MyGdxGame.batch.draw(ameba.img, x, y);//отрисовка амебы
              move();
     // }
 
@@ -140,7 +140,7 @@ public class PlayScreen implements Screen {
     public void resize(int width, int height) {
 
     }
-
+//метод, который я создала движение, но он не работает, поэтому в рисовке он просто записан без метода
     public void move(){
         int a = rand.nextInt(10) % 50 + 50; //генерация целого числа из диапозона -50 - +50 (вероятность)
         // a=new long[];
@@ -185,11 +185,12 @@ public class PlayScreen implements Screen {
     public void dispose() {
         //game.dispose();
     }
+    //метод который должен создавать амеб но чтото идет не так
     private void spawn(){
         int x = 1;
         Ameba ameba1=new Ameba( x,1);
         x= MathUtils.random(0,1000);
         amebas.add(ameba1);
-        lastDropTime = TimeUtils.nanoTime();
+      //  lastDropTime = TimeUtils.nanoTime();
     }
 }
