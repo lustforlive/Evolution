@@ -2,10 +2,12 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.screen.Menu;
 import com.mygdx.game.screen.PlayScreen;
+import com.mygdx.game.sprites.Ameba;
 
 public class MyGdxGame extends Game {
 	public static SpriteBatch batch;
@@ -18,14 +20,18 @@ public class MyGdxGame extends Game {
 	public PlayScreen gam;
 	public Menu menu;
 	public static MyGdxGame game;
+	OrthographicCamera camera;
 
 	@Override
 	public void create () {
 
+
 		batch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");
-		WIDTH= Gdx.graphics.getWidth();
-		HEIGHT=Gdx.graphics.getHeight();
+		WIDTH= Gdx.graphics.getHeight();
+		HEIGHT=Gdx.graphics.getWidth();
+		camera = new OrthographicCamera();
+		camera.setToOrtho(false, HEIGHT,WIDTH);
 	//	background = new Texture("black.jpeg");
 		playbutton = new Texture("button1.png");
 		ameba= new Texture("ameba1.png");
@@ -34,6 +40,7 @@ public class MyGdxGame extends Game {
 		gam= new PlayScreen(this) ;
 			//setScreen(menu);
 		setScreen(gam);
+
 	}
 	//}
 

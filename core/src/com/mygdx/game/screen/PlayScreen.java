@@ -7,6 +7,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -45,6 +46,7 @@ public class PlayScreen implements Screen {
     private Array<Ameba> amebas;
     private long lastDropTime;
     private Stage stage;
+    private Stage stage2;
     private Texture myTexture;
     private TextureRegion myTextureRegion;
     private TextureRegionDrawable myTexRegionDrawable;
@@ -53,11 +55,18 @@ public class PlayScreen implements Screen {
     private TextureRegion myTextureRegion2;
     private TextureRegionDrawable myTexRegionDrawable2;
     private ImageButton button2;
+    OrthographicCamera camera;
     int b=0;
-
+    int x,y;double dx,dy;
+    Point2D point2D=new Point2D(x,y,speed);
+    Ameba ameba= new Ameba(10,10,50,50);
+    int width=50,height=50;
+    Protozoa prot = new Protozoa(sprite,point2D,speed);
     //конструктор
     public PlayScreen(MyGdxGame game) {
      this.game=game;
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, MyGdxGame.WIDTH,MyGdxGame.HEIGHT);
         //this.game=game;
         //batch = new SpriteBatch();
         //.. stage = new PlayStage(new ScreenViewport());
@@ -68,12 +77,15 @@ public class PlayScreen implements Screen {
 //главный метод в котором мы задаем глобалным переменным в файле значения и тд
     @Override
     public void show() {
+
         vector = new Vector2();
         amebas=new Array<Ameba>();
         spawn();
+        int x=50,y=0;
         //кнопка с изображением
         myTexture = new Texture(Gdx.files.internal("imbutton1.png"));
-        myTextureRegion = new TextureRegion(myTexture);
+        myTextureRegion = new TextureRegion(myTexture,0,0,400,140);
+
         myTexRegionDrawable = new TextureRegionDrawable(myTextureRegion);
         button = new ImageButton(myTexRegionDrawable); //Set the button up
 
@@ -89,18 +101,18 @@ public class PlayScreen implements Screen {
            }
            @Override
            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-               spawn();
+               //spawn();
 
            }
        });
-      /* вторая кнопка
-       myTexture2 = new Texture(Gdx.files.internal("button2.png"));
-        myTextureRegion2 = new TextureRegion(myTexture2);
-        myTexRegionDrawable2 = new TextureRegionDrawable(myTextureRegion2);
+      // вторая кнопка
+    /*  myTexture2 = new Texture(Gdx.files.internal("button2.png"));
+        myTextureRegion2 = new TextureRegion(myTexture2,-400,0,400+989,332);
+        myTexRegionDrawable2= new TextureRegionDrawable(myTextureRegion2);
         button2 = new ImageButton(myTexRegionDrawable2); //Set the button up
 
-        stage = new Stage(new ScreenViewport()); //Set up a stage for the ui
-        stage.addActor(button); //Add the button to the stage to perform rendering and take input.
+        //stage = new Stage(new ScreenViewport()); //Set up a stage for the ui
+        stage.addActor(button2); //Add the button to the stage to perform rendering and take input.
         Gdx.input.setInputProcessor(stage);
         button2.addListener(new ClickListener(){
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -114,7 +126,10 @@ public class PlayScreen implements Screen {
             }
         });*/
 
+
     }
+
+
 //метод отвечающий за рисовку
     @Override
     public void render(float delta) {
@@ -124,11 +139,13 @@ public class PlayScreen implements Screen {
         stage.act(Gdx.graphics.getDeltaTime()); //Perform ui logic
         stage.draw();
 
-        Ameba ameba=new Ameba(1,1);
+
+     //   Ameba ameba=new Ameba(10,10,50,50);
 //прописано движение
         int a = rand.nextInt(10) % 50 + 50; //генерация целого числа из диапозона -50 - +50 (вероятность)
-        float x=500, y=100;
-        if (a <= 5) {
+        float x, y;
+
+       /* if (a <= 5) {
             // double c = Math.random();
             int c = rand.nextInt(5) % 50 + 50;
             vector.y = (float) (x * Math.cos(c) - y * Math.sin(c));
@@ -139,24 +156,67 @@ public class PlayScreen implements Screen {
             vector.x = (float) (x * Math.cos(a) - y * Math.sin(a));
             vector.y = (float) (x * Math.sin(a) + y * Math.cos(a));
         }
-        speed=rand.nextInt(5);
+        speed=2;
         double dx = vector.x * speed;
         double dy = vector.y * speed;
         x += dx;
-        y += dy;
+        y += dy;*/
+
+       /*  double d = Math.random();
+       if (d < 0.5) {
+            speed = 5 + speed;
+            width += 1;
+            height += 1;
+        }
+        if (d >= 0.5) {
+            speed = 1 + speed;
+            width += 2;
+            height += 2;
+        }*/
+
 //если б=1 то отрисовать амебу
- if(b==1){
+ //if(b==1){
+        if((TimeUtils.nanoTime() - lastDropTime)>600000){ evolution();b+=1;}
+
      for(int i=0;i<b;i++){
-         //for(Ameba ameba1:amebas) {
-             MyGdxGame.batch.draw(ameba.img, x, y);//отрисовка амебы
-             move();
-    // }
+        // for(Ameba ameba1:amebas) {
+         x=MathUtils.random(0,1000);
+         y=MathUtils.random(0,1000);
+             MyGdxGame.batch.draw(ameba.img, x, y,width,height);//отрисовка амебы
+         if(x<dx && y<dy){
+
+                 x += 1;
+                 y += 1;
+             }
+         else if(x>dx && y>dy){
+
+                 x -= 1;
+                 y -= 1;
+
+         }
+         if(x>dx && y<dy){
+
+                 x += 1;
+                 y += 1;
+             }
+         else if(x<dx && y>dy){
+
+                 x -= 1;
+                 y -= 1;
+
+         }
+        // spawn();
+         move();
+            // evolutionam();
+
+
+     }
 
 
 
-         b--;
-}
- }
+       //  b--;
+//}
+ //}
         //MyGdxGame.batch.draw(Ameba.img,MyGdxGame.WIDTH/6,MyGdxGame.HEIGHT/4);
         MyGdxGame.batch.end();
        // if(lastDropTime>1000000000) spawn();
@@ -183,14 +243,37 @@ public class PlayScreen implements Screen {
             //
 
             //поворот вектора на угол
-            vector.x = (float) (x * Math.cos(a) - y * Math.sin(a));
-            vector.y = (float) (x * Math.sin(a) + y * Math.cos(a));
+            x = (float) (x * Math.cos(a) - y * Math.sin(a));
+            y = (float) (x * Math.sin(a) + y * Math.cos(a));
         }
-        speed=rand.nextInt(5);
+        speed=2;
         double dx = vector.x * speed;
         double dy = vector.y * speed;
-        x += dx;
-        y += dy;
+      /*  if(x<dx && y<dy){
+        while(x<dx && y<dy){
+            x += 1;
+            y += 1;
+        }}
+         else if(x>dx && y>dy){
+             while(x>dx && y>dy){
+             x -= 1;
+             y -= 1;
+         }
+         }
+        if(x>dx && y<dy){
+            while(x>dx && y<dy){
+                x += 1;
+                y += 1;
+            }}
+        else if(x<dx && y>dy){
+            while(x<dx && y>dy){
+                x -= 1;
+                y -= 1;
+            }
+        }*/
+
+
+
     }
     @Override
     public void pause() {
@@ -212,11 +295,31 @@ public class PlayScreen implements Screen {
         //game.dispose();
     }
     //метод который должен создавать амеб но чтото идет не так
-    private void spawn(){
-        int x = 1;
-        Ameba ameba1=new Ameba( x,1);
+    private void spawn(){lastDropTime = TimeUtils.millis();
+        int x ;
         x= MathUtils.random(0,1000);
+        Ameba ameba1=new Ameba( x,1,50,50);
+
         amebas.add(ameba1);
-      //  lastDropTime = TimeUtils.nanoTime();
+
+
+
+    }
+    private void evolution(){
+        //long m=
+
+    //    if((TimeUtils.nanoTime() - lastDropTime)>600000){
+        double d = Math.random();
+        if (d < 0.5) {
+            //speed = 1 + speed;
+           //  width += 1;
+            // height += 1;
+        }
+        if (d >= 0.5) {
+           // speed = 1 + speed;
+             width += 2;
+             //height += 2;
+        }
+        //}
     }
 }

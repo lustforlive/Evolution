@@ -35,4 +35,18 @@ public class Protozoa extends Sprite{
         vector=new Vector2(0,0);
 
     }
+    public void evolutionam() //эволюция простейших
+    {
+        double d = Math.random();
+        if (d < 0.5) {
+            speed = 5 + speed;
+            width += 60;
+            height += 60;
+        }
+        if (d >= 0.5) {
+            speed = 1 + speed;
+            width += 100;
+            height += 100;
+        }
+    }
 }

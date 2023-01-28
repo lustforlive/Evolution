@@ -18,7 +18,7 @@ public class Ameba extends Protozoa{
     //public Texture img;
     Array<Ameba> amebas;
 
-    public Ameba(int x, int y) {
+    public Ameba(int x, int y,int width, int height) {
         super(new Texture("ameba1.png"),Protozoa.position,Protozoa.speed);
       //  Array<Protozoa> protozoa=new Array<Protozoa>();
 
