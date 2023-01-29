@@ -231,7 +231,7 @@ public class PlayScreen implements Screen {
 
                  x -= 1;
                  y -= 1;
-            // ухй
+
          }
          if(x>dx && y<dy){
 
