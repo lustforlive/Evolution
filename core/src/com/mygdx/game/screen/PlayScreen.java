@@ -2,6 +2,7 @@ package com.mygdx.game.screen;
 
 
 
+import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -18,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
@@ -31,9 +33,11 @@ import com.mygdx.game.sprites.Protozoa;
 import com.mygdx.game.sprites.Sprite;
 
 import java.awt.JobAttributes;
+import java.awt.desktop.AppReopenedListener;
 import java.util.Random;
 
 public class PlayScreen implements Screen {
+    MyTextInputListener text;
     MyGdxGame game;
     public Texture sprite;
     Random rand=new Random();
@@ -65,15 +69,20 @@ public class PlayScreen implements Screen {
 
     private Texture eat;
     OrthographicCamera camera;
-  int b=0;
-    int x,y;double dx,dy;
+  //int b=0;
+    int x,y,q=0;double dx,dy;
     Point2D point2D=new Point2D(x,y,speed);
     Ameba ameba= new Ameba(10,10,50,50);
     int width=50,height=50;
     Protozoa prot = new Protozoa(sprite,point2D,speed);
     //конструктор
     int xe,ye;
+    int m;
+
+
+    String b=new String();
     public PlayScreen(MyGdxGame game) {
+
      this.game=game;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, MyGdxGame.WIDTH,MyGdxGame.HEIGHT);
@@ -87,12 +96,12 @@ public class PlayScreen implements Screen {
 //главный метод в котором мы задаем глобалным переменным в файле значения и тд
     @Override
     public void show() {
-        eat=new Texture("food.png");
         vector = new Vector2();
         amebas=new Array<Ameba>();
         spawn();
         int x=50,y=0;
-
+        eat=new Texture(Gdx.files.internal("food.png"));
+// b = new String();
         //кнопка с изображением
         myTexture = new Texture(Gdx.files.internal("imbutton1.png"));
         myTextureRegion = new TextureRegion(myTexture,0,0,400,140);
@@ -107,7 +116,7 @@ public class PlayScreen implements Screen {
         //функционал кнопки
        button.addListener(new ClickListener(){
            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-             //  b++;
+
                myTexture3 = new Texture(Gdx.files.internal("imbutton1.png"));
                myTextureRegion3= new TextureRegion(myTexture3,400,0,400,140);
 
@@ -120,17 +129,22 @@ public class PlayScreen implements Screen {
                button3.addListener(new ClickListener(){
                    @Override
                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                       m++;
+                      // MyTextInputListener listener = new MyTextInputListener();
+                       //Gdx.input.getTextInput(listener,"количество амеб",b,"введите количество амёб",Input.OnscreenKeyboardType.NumberPad);
+                     // String b = toString();
+                      // if(b==null)return;
 
-                       MyTextInputListener listener = new MyTextInputListener();
+                       q=m*5;
+                       xe=MathUtils.random(250,2000);
+                       ye=MathUtils.random(250,2000);
 
-                       Gdx.input.getTextInput(listener,"Dialog Title","","введите количество амёб");
-                      // String b = toString();
                        return true;
                    }
                    @Override
                    public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                       spawn();
-
+                      // spawn();
+                      // m=Integer.parseInt(b.trim());
                    }
                });
 
@@ -143,8 +157,8 @@ public class PlayScreen implements Screen {
            }
        });
       // вторая кнопка
-    /*  myTexture2 = new Texture(Gdx.files.internal("button2.png"));
-        myTextureRegion2 = new TextureRegion(myTexture2,-400,0,400+989,332);
+     /* myTexture2 = new Texture(Gdx.files.internal("button2.png"));
+        myTextureRegion2 = new TextureRegion(myTexture2,-400,0,989+1000,332);
         myTexRegionDrawable2= new TextureRegionDrawable(myTextureRegion2);
         button2 = new ImageButton(myTexRegionDrawable2); //Set the button up
 
@@ -153,7 +167,8 @@ public class PlayScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
         button2.addListener(new ClickListener(){
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                b++;
+
+
                 return true;
             }
             @Override
@@ -213,33 +228,50 @@ public class PlayScreen implements Screen {
 
 //если б=1 то отрисовать амебу
  //if(b==1){
+       // String b= toString();
       //  if((TimeUtils.nanoTime() - lastDropTime)>600000){ evolution();b+=1;}
+//int m=Integer.parseInt(b.trim());
+       // int m=8;
 
-     for(int i=0;i<b;i++){
+
+
+       // try {
+        //    m=Integer.parseInt(b);
+       // }catch (NumberFormatException e){
+
+        //}
+        for(int i = 0; i<m; i++){
 
         // for(Ameba ameba1:amebas) {
-         x=MathUtils.random(0,1000);
-         y=MathUtils.random(0,1000);
-             MyGdxGame.batch.draw(ameba.img, x, y,width,height);//отрисовка амебы
+         x=MathUtils.random(0,2000);
+         y=MathUtils.random(0,2000);
 
          if(x<dx && y<dy){
-
+             MyGdxGame.batch.draw(ameba.img, x, y,width,height);//отрисовка амебы
+             MyGdxGame.batch.draw(eat,xe,ye,25,25);
+             evolution();
                  x += 1;
                  y += 1;
              }
          else if(x>dx && y>dy){
-
+             MyGdxGame.batch.draw(ameba.img, x, y,width,height);//отрисовка амебы
+             MyGdxGame.batch.draw(eat,xe,ye,25,25);
+             evolution();
                  x -= 1;
                  y -= 1;
             // ухй
          }
          if(x>dx && y<dy){
-
+             MyGdxGame.batch.draw(ameba.img, x, y,width,height);//отрисовка амебы
+             MyGdxGame.batch.draw(eat,xe,ye,25,25);
+             evolution();
                  x += 1;
                  y += 1;
              }
          else if(x<dx && y>dy){
-
+             MyGdxGame.batch.draw(ameba.img, x, y,width,height);//отрисовка амебы
+             MyGdxGame.batch.draw(eat,xe,ye,25,25);
+             evolution();
                  x -= 1;
                  y -= 1;
 
@@ -251,17 +283,17 @@ public class PlayScreen implements Screen {
 
      }
 
-        for(int j=0;j<5;j++) {
-            xe=MathUtils.random(0,1000);
-            ye=MathUtils.random(0,1000);
-            MyGdxGame.batch.draw(eat,xe,ye,25,25);
-        }
-       //  b--;
+      //  for(int j=0;j<q;j++) {
+
+           // MyGdxGame.batch.draw(eat,xe,ye,25,25);
+         //   q--;
+
 //}
- //}
+
         //MyGdxGame.batch.draw(Ameba.img,MyGdxGame.WIDTH/6,MyGdxGame.HEIGHT/4);
-        MyGdxGame.batch.end();
+
        // if(lastDropTime>1000000000) spawn();
+        MyGdxGame.batch.end();
     }
 
     @Override
@@ -353,14 +385,14 @@ public class PlayScreen implements Screen {
     //    if((TimeUtils.nanoTime() - lastDropTime)>600000){
         double d = Math.random();
         if (d < 0.5) {
-            //speed = 1 + speed;
+            speed = 1 + speed;
            //  width += 1;
-            // height += 1;
+           //  height += 1;
         }
         if (d >= 0.5) {
-           // speed = 1 + speed;
-            // width += 2;
-             //height += 2;
+            speed = 1 + speed;
+          ///  width += 2;
+          //  height += 2;
         }
         //}
     }
