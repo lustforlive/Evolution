@@ -2,24 +2,17 @@ package com.mygdx.game.screen;
 
 
 
-import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
@@ -30,10 +23,8 @@ import com.mygdx.game.Tools.MyTextInputListener;
 import com.mygdx.game.Tools.Point2D;
 import com.mygdx.game.sprites.Ameba;
 import com.mygdx.game.sprites.Protozoa;
-import com.mygdx.game.sprites.Sprite;
 
-import java.awt.JobAttributes;
-import java.awt.desktop.AppReopenedListener;
+import java.awt.Color;
 import java.util.Random;
 
 public class PlayScreen implements Screen {
@@ -55,19 +46,23 @@ public class PlayScreen implements Screen {
     private Stage stage;
     private Stage stage2;
     private Texture myTexture;
-    private TextureRegion myTextureRegion;
-    private TextureRegionDrawable myTexRegionDrawable;
-    private ImageButton button;
+
+    private ImageButton button1;
     private Texture myTexture2;
-    private TextureRegion myTextureRegion2;
-    private TextureRegionDrawable myTexRegionDrawable2;
+
     private ImageButton button2;
     private Texture myTexture3;
     private ImageButton button3;
-    private TextureRegion myTextureRegion3;
-    private TextureRegionDrawable myTexRegionDrawable3;
-
+   private ImageButton buttonsetting;
+   private Texture myTexture4;
+    private ImageButton buttonback;
+    private Texture myTexture5;
     private Texture eat;
+    private Texture cycle;
+    private ImageButton btcycle;
+    private ImageButton chooseam;
+    private ImageButton btsetting1;
+    private ImageButton btsetting2;
     OrthographicCamera camera;
   //int b=0;
     int x,y,q=0;double dx,dy;
@@ -77,9 +72,13 @@ public class PlayScreen implements Screen {
     Protozoa prot = new Protozoa(sprite,point2D,speed);
     //конструктор
     int xe,ye;
-    int m;
-
-
+    int m;int n=0,c=0;
+    BitmapFont font=new BitmapFont();
+    String cycle1="1";
+    private Texture one;
+    private Texture two;
+    private Texture three;
+    private Texture four;
     String b=new String();
     public PlayScreen(MyGdxGame game) {
 
@@ -96,36 +95,33 @@ public class PlayScreen implements Screen {
 //главный метод в котором мы задаем глобалным переменным в файле значения и тд
     @Override
     public void show() {
+        one= new Texture(Gdx.files.internal("one.jpg"));
+        two= new Texture(Gdx.files.internal("two.jpg"));
+        three= new Texture(Gdx.files.internal("three.jpg"));
+        four= new Texture(Gdx.files.internal("four.jpg"));
+        myTexture3 = new Texture(Gdx.files.internal("выборамеб.png"));
         vector = new Vector2();
         amebas=new Array<Ameba>();
         spawn();
         int x=50,y=0;
-        eat=new Texture(Gdx.files.internal("food.png"));
+        eat=new Texture(Gdx.files.internal("food.png")); stage = new Stage(new ScreenViewport());
 // b = new String();
         //кнопка с изображением
         myTexture = new Texture(Gdx.files.internal("imbutton1.png"));
-        myTextureRegion = new TextureRegion(myTexture,0,0,400,140);
-
-        myTexRegionDrawable = new TextureRegionDrawable(myTextureRegion);
-        button = new ImageButton(myTexRegionDrawable); //Set the button up
-
-        stage = new Stage(new ScreenViewport()); //Set up a stage for the ui
-        stage.addActor(button); //Add the button to the stage to perform rendering and take input.
+        button1 = new ImageButton(new TextureRegionDrawable(myTexture)); //Set the button up
+        button1.setPosition(0,0);
+        //Set up a stage for the ui
+        stage.addActor(button1); //Add the button to the stage to perform rendering and take input.
         Gdx.input.setInputProcessor(stage);
 
         //функционал кнопки
-       button.addListener(new ClickListener(){
+       button1.addListener(new ClickListener(){
            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 
-               myTexture3 = new Texture(Gdx.files.internal("imbutton1.png"));
-               myTextureRegion3= new TextureRegion(myTexture3,400,0,400,140);
-
-               myTexRegionDrawable3 = new TextureRegionDrawable(myTextureRegion3);
-               button3 = new ImageButton(myTexRegionDrawable3); //Set the button up
-
-               stage = new Stage(new ScreenViewport()); //Set up a stage for the ui
-               stage.addActor(button3); //Add the button to the stage to perform rendering and take input.
-               Gdx.input.setInputProcessor(stage);
+               myTexture3 = new Texture(Gdx.files.internal("выборамеб.png"));
+               button3 = new ImageButton(new TextureRegionDrawable(myTexture3));
+               button3.setPosition(0,140);
+               stage.addActor(button3);
                button3.addListener(new ClickListener(){
                    @Override
                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -136,8 +132,8 @@ public class PlayScreen implements Screen {
                       // if(b==null)return;
 
                        q=m*5;
-                       xe=MathUtils.random(250,2000);
-                       ye=MathUtils.random(250,2000);
+                       xe=MathUtils.random(0,2000);
+                       ye=MathUtils.random(0,2000);
 
                        return true;
                    }
@@ -147,6 +143,27 @@ public class PlayScreen implements Screen {
                       // m=Integer.parseInt(b.trim());
                    }
                });
+               myTexture3 = new Texture(Gdx.files.internal("выборамеб.png"));
+               chooseam = new ImageButton(new TextureRegionDrawable(myTexture3));
+               chooseam.setPosition(330,140);
+               stage.addActor(chooseam);
+               chooseam.addListener(new ClickListener(){
+                   public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                       m=MathUtils.random(5,10);
+                       // MyTextInputListener listener = new MyTextInputListener();
+                       //Gdx.input.getTextInput(listener,"количество амеб",b,"введите количество амёб",Input.OnscreenKeyboardType.NumberPad);
+                       // String b = toString();
+                       // if(b==null)return;
+
+                       q=m*5;
+                       xe=MathUtils.random(0,2000);
+                       ye=MathUtils.random(0,2000);
+
+                       return true;
+                   }
+               });
+
+
 
                return true;
            }
@@ -157,18 +174,13 @@ public class PlayScreen implements Screen {
            }
        });
       // вторая кнопка
-     /* myTexture2 = new Texture(Gdx.files.internal("button2.png"));
-        myTextureRegion2 = new TextureRegion(myTexture2,-400,0,989+1000,332);
-        myTexRegionDrawable2= new TextureRegionDrawable(myTextureRegion2);
-        button2 = new ImageButton(myTexRegionDrawable2); //Set the button up
-
-        //stage = new Stage(new ScreenViewport()); //Set up a stage for the ui
-        stage.addActor(button2); //Add the button to the stage to perform rendering and take input.
+        myTexture2 = new Texture(Gdx.files.internal("button2.png"));
+        button2= new ImageButton(new TextureRegionDrawable(myTexture2));
+        button2.setPosition(400,0);
+        stage.addActor(button2);
         Gdx.input.setInputProcessor(stage);
         button2.addListener(new ClickListener(){
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-
-
                 return true;
             }
             @Override
@@ -176,22 +188,96 @@ public class PlayScreen implements Screen {
                 spawn();
 
             }
-        });*/
+        });
+        myTexture4= new Texture(Gdx.files.internal("setting.png"));
+        buttonsetting=new ImageButton(new TextureRegionDrawable(myTexture4));
+        buttonsetting.setPosition(0,1000);
+        stage.addActor(buttonsetting);
+        buttonsetting.addListener(new ClickListener(){
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 
+                btsetting1=new ImageButton(new TextureRegionDrawable(myTexture3));
+                btsetting1.setPosition(130,1000);
+                stage.addActor(btsetting1);
+                btsetting1.addListener(new ClickListener(){
+                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                        n=1;
+                        return true;
+                    }
+                    @Override
+                    public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                    }
+                });
+                btsetting2=new ImageButton(new TextureRegionDrawable(myTexture3));
+                btsetting2.setPosition(230,1000);
+                stage.addActor(btsetting2);
 
+                btsetting2.addListener(new ClickListener(){
+                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                        n=0;
+                        return true;
+                    }
+                    @Override
+                    public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                    }
+                });
+                return true;
+            }
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+            }
+        });
+        myTexture5=new Texture(Gdx.files.internal("back.png"));
+        buttonback = new ImageButton(new TextureRegionDrawable(myTexture5));
+        buttonback.setPosition(2150,960);
+        stage.addActor(buttonback);
+        buttonback.addListener(new ClickListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+m=0;width=50;height=50;
+                return true;
+            }
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                //stage.addActor(button1);
+                //stage.addActor(button2);
+            }
+        });
+     cycle = new Texture(Gdx.files.internal("циклы.png"));
+
+        btcycle = new ImageButton(new TextureRegionDrawable(cycle)); //Set the button up
+        btcycle.setPosition(950,920);
+        stage.addActor(btcycle);
+        btcycle.addListener(new ClickListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+            }
+        });
+        /*button2.setPosition(1200,0);stage.addActor(button2);
+        button2.setPosition(1600,0);stage.addActor(button2);
+        button2.setPosition(2000,0);stage.addActor(button2);
+        button2.setPosition(2400,0);stage.addActor(button2);*/
     }
 
 
 //метод отвечающий за рисовку
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(1, 1, 1, 1);
+
+      if(n==0){ Gdx.gl.glClearColor(1, 1, 1, 1);}
+        if(n==1){ Gdx.gl.glClearColor(0, 0, 0, 0);}
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         MyGdxGame.batch.begin();
         stage.act(Gdx.graphics.getDeltaTime()); //Perform ui logic
         stage.draw();
-
-
+        //while(c==0){ MyGdxGame.batch.draw(one,1200,935);}
+       // while(c==1){ MyGdxGame.batch.draw(one,1200,935);}
+       // if(c==2){ MyGdxGame.batch.draw(one,1200,935);}
+       // if(c==3){ MyGdxGame.batch.draw(one,1200,935);}
      //   Ameba ameba=new Ameba(10,10,50,50);
 //прописано движение
         int a = rand.nextInt(10) % 50 + 50; //генерация целого числа из диапозона -50 - +50 (вероятность)
@@ -228,20 +314,22 @@ public class PlayScreen implements Screen {
 
 //если б=1 то отрисовать амебу
  //if(b==1){
-       // String b= toString();
-      //  if((TimeUtils.nanoTime() - lastDropTime)>600000){ evolution();b+=1;}
+
+
 //int m=Integer.parseInt(b.trim());
        // int m=8;
-
-
-
+        if(c==0) font.draw(MyGdxGame.batch,cycle1, 1250, 1008);
+        if(c==1)font.draw(MyGdxGame.batch,"2",1255,1008);
+        if(c==2)font.draw(MyGdxGame.batch,"3",1260,1008);
+        if(c==3)font.draw(MyGdxGame.batch,"4",1265,1008);
        // try {
         //    m=Integer.parseInt(b);
        // }catch (NumberFormatException e){
 
-        //}
-        for(int i = 0; i<m; i++){
+        // if ( time1 >6000) { evolution();time=0;}
 
+        for(int i = 0; i<m; i++){
+            if(TimeUtils.millis()-lastDropTime>60000){evolution();spawn();c++; }
         // for(Ameba ameba1:amebas) {
          x=MathUtils.random(0,2000);
          y=MathUtils.random(0,2000);
@@ -249,14 +337,14 @@ public class PlayScreen implements Screen {
          if(x<dx && y<dy){
              MyGdxGame.batch.draw(ameba.img, x, y,width,height);//отрисовка амебы
              MyGdxGame.batch.draw(eat,xe,ye,25,25);
-             evolution();
+
                  x += 1;
                  y += 1;
              }
          else if(x>dx && y>dy){
              MyGdxGame.batch.draw(ameba.img, x, y,width,height);//отрисовка амебы
              MyGdxGame.batch.draw(eat,xe,ye,25,25);
-             evolution();
+
                  x -= 1;
                  y -= 1;
             // ухй
@@ -264,14 +352,14 @@ public class PlayScreen implements Screen {
          if(x>dx && y<dy){
              MyGdxGame.batch.draw(ameba.img, x, y,width,height);//отрисовка амебы
              MyGdxGame.batch.draw(eat,xe,ye,25,25);
-             evolution();
+
                  x += 1;
                  y += 1;
              }
          else if(x<dx && y>dy){
              MyGdxGame.batch.draw(ameba.img, x, y,width,height);//отрисовка амебы
              MyGdxGame.batch.draw(eat,xe,ye,25,25);
-             evolution();
+
                  x -= 1;
                  y -= 1;
 
@@ -369,31 +457,24 @@ public class PlayScreen implements Screen {
         //game.dispose();
     }
     //метод который должен создавать амеб но чтото идет не так
-    private void spawn(){lastDropTime = TimeUtils.millis();
-        int x ;
+    private void spawn(){;
         x= MathUtils.random(0,1000);
         Ameba ameba1=new Ameba( x,1,50,50);
-
         amebas.add(ameba1);
-
-
-
+        lastDropTime = TimeUtils.millis();
     }
     private void evolution(){
-        //long m=
-
-    //    if((TimeUtils.nanoTime() - lastDropTime)>600000){
         double d = Math.random();
         if (d < 0.5) {
             speed = 1 + speed;
-           //  width += 1;
-           //  height += 1;
+            width += 1;
+            height += 1;
         }
         if (d >= 0.5) {
             speed = 1 + speed;
-          ///  width += 2;
-          //  height += 2;
+            width += 2;
+            height += 2;
         }
-        //}
+
     }
 }

@@ -27,7 +27,7 @@ public class MyGdxGame extends Game {
 
 
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+
 		WIDTH= Gdx.graphics.getHeight();
 		HEIGHT=Gdx.graphics.getWidth();
 		camera = new OrthographicCamera();
