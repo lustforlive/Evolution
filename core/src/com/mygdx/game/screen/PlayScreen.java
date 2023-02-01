@@ -75,8 +75,13 @@ public class PlayScreen implements Screen {
     int xe,ye;
     public PlayScreen(MyGdxGame game) {
      this.game=game;
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, MyGdxGame.WIDTH,MyGdxGame.HEIGHT);
+        float w = Gdx.graphics.getWidth();
+        float h = Gdx.graphics.getHeight();
+        camera = new OrthographicCamera(30, 30 * (h / w));
+        camera.setToOrtho(false,MyGdxGame.WIDTH,MyGdxGame.HEIGHT);
+        camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
+        camera.update();
+        Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         //this.game=game;
         //batch = new SpriteBatch();
         //.. stage = new PlayStage(new ScreenViewport());
@@ -125,6 +130,7 @@ public class PlayScreen implements Screen {
 
                        Gdx.input.getTextInput(listener,"Dialog Title","","введите количество амёб");
                       // String b = toString();
+                       b++;
                        return true;
                    }
                    @Override
@@ -266,8 +272,11 @@ public class PlayScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
+        stage = new Stage(new ScreenViewport());
+        Gdx.input.setInputProcessor(stage);
+        stage.getViewport().update(width, height, true);
     }
+
 //метод, который я создала движение, но он не работает, поэтому в рисовке он просто записан без метода
     public void move(){
         int a = rand.nextInt(10) % 50 + 50; //генерация целого числа из диапозона -50 - +50 (вероятность)
@@ -334,7 +343,7 @@ public class PlayScreen implements Screen {
 
     @Override
     public void dispose() {
-        //game.dispose();
+        //stage.dispose();
     }
     //метод который должен создавать амеб но чтото идет не так
     private void spawn(){lastDropTime = TimeUtils.millis();
