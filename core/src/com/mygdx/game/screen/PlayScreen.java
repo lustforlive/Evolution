@@ -465,15 +465,17 @@ m=0;width=50;height=50;
     }
     private void evolution(){
         double d = Math.random();
-        if (d < 0.5) {
+        if (d < 20) {
             speed = 1 + speed;
-            width += 1;
-            height += 1;
+            width += 40;
+            height += 40;
+            m=m*2;
         }
-        if (d >= 0.5) {
+        if (d >= 20) {
             speed = 1 + speed;
-            width += 2;
-            height += 2;
+            width += 50;
+            height += 50;
+            m=m*2;
         }
 
     }
